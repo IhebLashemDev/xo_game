@@ -34,6 +34,7 @@ function startGame() {
     });
     setBoardHoverClass();
     winningMessageElement.classList.remove('show');
+    clearEffects();  // Effacez les effets visuels précédents
 }
 
 function handleClick(e) {
@@ -44,6 +45,9 @@ function handleClick(e) {
         endGame(false);
         playWinningAnimation();  // Lancer l'animation
         applauseSound.play();  // Jouer le son d'applaudissement
+        showBalloonEffect();  // Affiche les ballons
+        showBoomEffect();  // Affiche l'effet "boom"
+        showConfettiEffect();  // Affiche les confettis
     } else if (isDraw()) {
         endGame(true);
     } else {
@@ -105,4 +109,52 @@ function playWinningAnimation() {
             cellElements[index].classList.add('winning');
         });
     }
+}
+
+/* Nouvelle fonction pour afficher les ballons */
+function showBalloonEffect() {
+    for (let i = 0; i < 10; i++) {
+        const balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.style.left = `${Math.random() * 100}vw`;
+        balloon.style.transform = `scale(${Math.random() + 0.5})`;
+        document.body.append(balloon);
+        setTimeout(() => balloon.remove(), 5000);  // Retirer les ballons après 5s
+    }
+}
+
+/* Nouvelle fonction pour afficher l'effet boom */
+function showBoomEffect() {
+    const boom = document.createElement('div');
+    boom.classList.add('boom');
+    boom.style.left = `${Math.random() * 100}vw`;
+    boom.style.top = `${Math.random() * 100}vh`;
+    document.body.append(boom);
+    setTimeout(() => boom.remove(), 1000);  // Retirer l'effet "boom" après 1s
+}
+
+/* Nouvelle fonction pour afficher les confettis */
+function showConfettiEffect() {
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        confetti.style.backgroundColor = getRandomColor();
+        document.body.append(confetti);
+        setTimeout(() => confetti.remove(), 3000);  // Retirer les confettis après 3s
+    }
+}
+
+/* Efface les effets visuels précédents */
+function clearEffects() {
+    document.querySelectorAll('.balloon').forEach(balloon => balloon.remove());
+    document.querySelectorAll('.boom').forEach(boom => boom.remove());
+    document.querySelectorAll('.confetti').forEach(confetti => confetti.remove());
+}
+
+/* Fonction pour obtenir une couleur aléatoire */
+function getRandomColor() {
+    const colors = ['#ffeb3b', '#ff1744', '#2979ff', '#00e676', '#fdd835', '#3f51b5'];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
